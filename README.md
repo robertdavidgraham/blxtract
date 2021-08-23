@@ -66,3 +66,4 @@ CRLF ("\r\n") at the end of the line.
 It would be 4 times faster to do a single pass searching for all 4 delimiters at once,
 instead of 4 separate passes. However, this would produce data in a different order.
 
+![hexdump](example-record-2.png)

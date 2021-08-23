@@ -1,3 +1,13 @@
+/*
+    Author: Robert Graham
+
+ This code extrats the CSV records from Dennis Montgomery's BLX files.
+ This code is based upon the spec written up in the README.md
+ file.
+
+ Just compile it on Windows or Linux. It doesn't have any special
+ dependencies.
+*/
 #define _FILE_OFFSET_BITS 64
 #define _CRT_SECURE_NO_WARNINGS
 #define WIN32_LEAN_AND_MEAN
