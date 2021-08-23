@@ -19,4 +19,50 @@ The original 300 gigabytes of data is available at this BitTorrent magnet link:
 
 The code is in Microsoft's C++/CLR language. 
 
+## Specification
+
+The extract program works like the following.
+
+The data has been encoded with ROT3, meaning they've been rotated 3 positions
+to the left, meaning the number 3 has been subtracted from each character.
+
+The data we are able to extract accounts for less than 1% of size of the
+files we have, like `rnx-000001.bin`. The remainder of the files consist of
+either random junk data or encrypted records that we cannot extract without
+the key.
+
+The code does 4 passes over the file looking for records embedded in the file.
+Each pass starts at the beginning of the file proceeding to the end.
+
+A pass looks for a start-of-record pattern, a different pass for each pattern.
+The list of start-of-record delimeters are:
+- "xT1y22"
+- "tx16!!"
+- "eTreppid1!"
+- "shaitan123"
+
+Note that these are the plain-text patterns. When scanning the file for the
+pattern, you must either rotate-left each incoming byte, or rotate-right the
+bytes of the patterns. In other words, the actual start-of-record patterns
+in the raw file look like:
+- "{W4|55"
+- "w{49$$"
+- "hWuhsslg4$"
+- "vkdlwdq456"
+
+When a delimeter is found, it then reads the next 1024 bytes of the file that
+follow the start-of-record.
+
+ROT3 (subtract 3 from each byte) is then applied to all 1024 bytes, meaing, 
+the value 3 is subtracted from all the bytes.
+
+It then looks for an end-of-record delimeter of ".dev@7964" and truncates the record
+at that point (removing the end delimeter and everything after). This is the plain-text
+delimeter that matches after ROT3 conversion of the data.
+
+The remaining record is then written to the output. Each record is written with an additional
+CRLF ("\r\n") at the end of the line.
+
+It would be 4 times faster to do a single pass searching for all 4 delimiters at once,
+instead of 4 separate passes. However, this would produce data in a different order.
 
