@@ -60,8 +60,18 @@ void ExtractFileProcess(String ^filename)
 	{
 		String^ rnx = "!a-bn1poe4-kjb=87rger7rge3$#%#$4675!@#$34(^%!@#$225(&%*";
 		String^ key = rnx->Remove(17, 5);
-		array<array<Byte>^>^ arr = { {120,84,49,121,50,50},{116,120,49,54,33,33},{101,84,114,101,112,112,105,100,49,33},{115,104,97,105,116,97,110,49,50,51} };
+		array<array<Byte>^>^ arr = { 
+			{120,84,49,121,50,50}, /* "xT1y22" */
+			{116,120,49,54,33,33}, /* "tx16!!" */
+			{101,84,114,101,112,112,105,100,49,33}, /* "eTreppid1!" */
+			{115,104,97,105,116,97,110,49,50,51} }; /* "shaitan123" */
 		int matchCount = 0;
+
+		
+			
+			
+			
+		
 		
 		FileInfo^ info = gcnew FileInfo(filename);
 		int ValIndex = Convert::ToInt32(rnx->ToCharArray()[25].ToString());
@@ -133,6 +143,7 @@ void ExtractFileProcess(String ^filename)
 							String^ data = dStr->Remove(index);
 							array<Byte>^ buf = Encoding::UTF8->GetBytes(data);
 							fsExtractedCSV->Write(buf, 0, buf->Length);
+							fsExtractedCSV->WriteByte('\r');
 							fsExtractedCSV->WriteByte('\n');
 						}
 					}
